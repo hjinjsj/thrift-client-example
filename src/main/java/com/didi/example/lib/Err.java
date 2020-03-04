@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author huangjin
  */
-public class Error {
+public class Err {
     public static final int ERROR_PARAM = 400_000_000;
     public static final int ERROR_NOT_FOUND_CODE = 400_000_001;
     public static final int ERROR_NOT_FOUND_UID = 500_000_000;
