@@ -41,13 +41,16 @@ public class ExampleClientApplication implements ApplicationRunner {
         log.info("start thrift client example app.");
 //        thriftClient.connServer();
 //        thriftClient.nbConnServer();
-//        userService.findById((long)1);
-//        userService.findByIds(Lists.newArrayList((long)1));
-//        userService.create(new UserDto("test"));
-//        userService.update(new UserDto().setId((long)1).setName("hjin").setMobile("86-15201330138"));
-//        userService.remove((long)1);
+//        thriftClient.nbCompactConnServer();
+        thriftClient.nbJsonConnServer();
 
-        testAsync9();
+        userService.findById((long)1);
+        userService.findByIds(Lists.newArrayList((long)1));
+        userService.create(new UserDto("test"));
+        userService.update(new UserDto().setId((long)1).setName("hjin").setMobile("86-15201330138"));
+        userService.remove((long)1);
+
+//        testAsync9();
     }
 
     public void testAsync9() throws TException {

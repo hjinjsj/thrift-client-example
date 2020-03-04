@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TException;
 import org.apache.thrift.async.TAsyncClientManager;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TMultiplexedProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
+import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -51,6 +49,36 @@ public class ThriftClient {
         try {
             transport = new TFramedTransport(new TSocket("localhost", port));
             TBinaryProtocol protocol = new TBinaryProtocol(transport);
+            TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
+            userServiceClient = new UserService.Client(mp);
+            transport.open();
+        } catch(TException e) {
+            transport.close();
+            log.error("conn thrift server fail , err msg: {}", e.getStackTrace());
+        }
+    }
+
+    public void nbCompactConnServer() {
+        log.info("conn compact thrift server at port: {}", port);
+        TTransport transport = null;
+        try {
+            transport = new TFramedTransport(new TSocket("localhost", port));
+            TCompactProtocol protocol = new TCompactProtocol(transport);
+            TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
+            userServiceClient = new UserService.Client(mp);
+            transport.open();
+        } catch(TException e) {
+            transport.close();
+            log.error("conn thrift server fail , err msg: {}", e.getStackTrace());
+        }
+    }
+
+    public void nbJsonConnServer() {
+        log.info("conn json thrift server at port: {}", port);
+        TTransport transport = null;
+        try {
+            transport = new TFramedTransport(new TSocket("localhost", port));
+            TJSONProtocol protocol = new TJSONProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
             transport.open();
