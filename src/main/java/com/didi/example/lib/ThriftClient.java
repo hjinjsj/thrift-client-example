@@ -20,9 +20,11 @@ import java.io.IOException;
 @Component
 @Data
 @Slf4j
-@ConfigurationProperties(prefix = "thrift")
+@ConfigurationProperties(prefix = "thrift.client")
 public class ThriftClient {
     private int port;
+
+    private int timeout = 0;
 
     private UserService.Client userServiceClient;
 
@@ -32,7 +34,7 @@ public class ThriftClient {
         log.info("conn thrift server at port: {}" , port);
         TSocket transport = null;
         try {
-            transport = new TSocket("localhost", port);
+            transport = new TSocket("localhost", port, timeout);
             TBinaryProtocol protocol = new TBinaryProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
@@ -47,7 +49,7 @@ public class ThriftClient {
         log.info("conn thrift server at port: {}", port);
         TTransport transport = null;
         try {
-            transport = new TFramedTransport(new TSocket("localhost", port));
+            transport = new TFramedTransport(new TSocket("localhost", port, timeout));
             TBinaryProtocol protocol = new TBinaryProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
@@ -62,7 +64,7 @@ public class ThriftClient {
         log.info("conn compact thrift server at port: {}", port);
         TTransport transport = null;
         try {
-            transport = new TFramedTransport(new TSocket("localhost", port));
+            transport = new TFramedTransport(new TSocket("localhost", port, timeout));
             TCompactProtocol protocol = new TCompactProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
@@ -77,7 +79,7 @@ public class ThriftClient {
         log.info("conn json thrift server at port: {}", port);
         TTransport transport = null;
         try {
-            transport = new TFramedTransport(new TSocket("localhost", port));
+            transport = new TFramedTransport(new TSocket("localhost", port, timeout));
             TJSONProtocol protocol = new TJSONProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
@@ -94,7 +96,7 @@ public class ThriftClient {
         try {
             TAsyncClientManager clientManager = new TAsyncClientManager();
             transport = new TNonblockingSocket(
-                "localhost", port);
+                "localhost", port, timeout);
             TProtocolFactory protocol = new TBinaryProtocol.Factory();
             userServiceAsyncClient = new UserService.AsyncClient(protocol,
                 clientManager, transport);
