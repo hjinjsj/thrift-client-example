@@ -1,0 +1,31 @@
+plugins {
+	id 'org.springframework.boot' version '1.5.10.RELEASE'
+	id 'java'
+}
+
+
+group = 'com.didi.example'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-configuration-processor")
+	compile("org.apache.thrift:libthrift:0.13.0")
+	compile("com.google.guava:guava:14.0")
+
+//	在gradle4.7以后对于加入依赖lombok方式发生变化，gradle4.7版本以前，可以直接如下引用：
+//	compile("org.projectlombok:lombok:1.18.2")或者compileOnly("org.projectlombok:lombok:1.18.2")
+//	在gradle4.7版本以后甚至现在gradle5.0了里面这种方式会产生警告,在gradle5.0里面会直接报编译错误。
+//	正确使用可以采用如下方式
+	annotationProcessor("org.projectlombok:lombok")
+	compileOnly("org.projectlombok:lombok")
+
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+
+	testAnnotationProcessor("org.projectlombok:lombok")
+	testCompileOnly("org.projectlombok:lombok")
+}
