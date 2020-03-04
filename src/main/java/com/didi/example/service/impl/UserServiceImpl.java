@@ -1,6 +1,7 @@
 package com.didi.example.service.impl;
 
 import com.didi.example.dto.UserDto;
+import com.didi.example.lib.MyException;
 import com.didi.example.lib.ThriftClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TException;
@@ -22,7 +23,6 @@ public class UserServiceImpl {
             log.info(userDto.toString());
         } catch (TException e) {
             log.error("Exception: {}", e.getStackTrace());
-            e.printStackTrace();
         }
     }
 
@@ -57,6 +57,8 @@ public class UserServiceImpl {
         try {
             boolean res = thriftClient.getUserServiceClient().remove(uid);
             log.info("remove result: {}", res);
+        } catch (MyException e) {
+            log.error("MyException: code-{} msg-{}", e.getCode(), e.getMsg());
         } catch (TException e) {
             log.error("Exception: {}", e.getStackTrace());
         }

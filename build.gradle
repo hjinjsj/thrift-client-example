@@ -14,7 +14,7 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-configuration-processor")
-	compile("org.apache.thrift:libthrift:0.13.0")
+	compile("org.apache.thrift:libthrift:0.9.3")
 	compile("com.google.guava:guava:14.0")
 
 //	在gradle4.7以后对于加入依赖lombok方式发生变化，gradle4.7版本以前，可以直接如下引用：

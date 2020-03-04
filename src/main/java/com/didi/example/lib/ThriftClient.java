@@ -4,12 +4,16 @@ import com.didi.example.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TException;
+import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
+import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 
 /**
@@ -24,15 +28,17 @@ public class ThriftClient {
 
     private UserService.Client userServiceClient;
 
+    private UserService.AsyncClient userServiceAsyncClient;
+
     public void connServer(){
         log.info("conn thrift server at port: {}" , port);
         TSocket transport = null;
         try {
             transport = new TSocket("localhost", port);
-            transport.open();
             TBinaryProtocol protocol = new TBinaryProtocol(transport);
             TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "UserService");
             userServiceClient = new UserService.Client(mp);
+            transport.open();
         } catch(TException e) {
             transport.close();
             log.error("conn thrift server fail , err msg: {}", e.getStackTrace());
@@ -50,6 +56,21 @@ public class ThriftClient {
             transport.open();
         } catch(TException e) {
             transport.close();
+            log.error("conn thrift server fail , err msg: {}", e.getStackTrace());
+        }
+    }
+
+    public void  asyncConnServer() {
+        log.info("async conn thrift server at port: {}", port);
+        TNonblockingTransport transport = null;
+        try {
+            TAsyncClientManager clientManager = new TAsyncClientManager();
+            transport = new TNonblockingSocket(
+                "localhost", port);
+            TProtocolFactory protocol = new TBinaryProtocol.Factory();
+            userServiceAsyncClient = new UserService.AsyncClient(protocol,
+                clientManager, transport);
+        } catch (IOException e) {
             log.error("conn thrift server fail , err msg: {}", e.getStackTrace());
         }
     }

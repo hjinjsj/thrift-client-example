@@ -1,6 +1,7 @@
 package com.didi.example.model;
 
 
+import com.didi.example.dto.UserDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -16,4 +17,12 @@ public class User {
     String name;
     String mobile;
     boolean isDeleted;
+
+    public UserDto toDto() {
+        return new UserDto()
+            .setId(id)
+            .setName(name)
+            .setMobile(mobile)
+            .setIsDeleted(isDeleted);
+    }
 }
