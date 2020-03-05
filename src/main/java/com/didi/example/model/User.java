@@ -15,16 +15,16 @@ import java.util.Date;
 @Data
 @ToString
 public class User {
-    long id;
+    long userId;
     String name;
     String mobile;
     Date createTime;
     Date updateTime;
-    boolean isDeleted;
+    Boolean isDeleted;
 
     public UserDto toDto() {
         return new UserDto()
-            .setUserId(id)
+            .setUserId(userId)
             .setName(name)
             .setMobile(mobile)
             .setCreateTime(DateUtil.dateToMillisecond(createTime))

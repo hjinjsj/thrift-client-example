@@ -44,10 +44,10 @@ public class ExampleClientApplication implements ApplicationRunner {
 //        thriftClient.nbCompactConnServer();
         thriftClient.nbJsonConnServer();
 
-        userService.findById((long)1);
-        userService.findByIds(Lists.newArrayList((long)1));
+        userService.findById((long)2);
+        userService.findByIds(Lists.newArrayList((long)2, (long)4, (long)5));
         userService.create(new UserDto("test"));
-        userService.update(new UserDto().setUserId((long)1).setName("hjin").setMobile("86-15201330138"));
+        userService.update(new UserDto().setUserId((long)6).setName("hjin").setMobile("86-15201330138"));
         userService.remove((long)1);
 
 //        testAsync9();
